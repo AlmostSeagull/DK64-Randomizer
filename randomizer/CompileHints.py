@@ -2201,7 +2201,7 @@ def compileSpoilerHints(spoiler):
             "active_moves": spoiler.settings.points_list_active_moves,
             "pad_moves": spoiler.settings.points_list_pad_moves,
             "barrel_moves": spoiler.settings.points_list_barrel_moves,
-            "training_moves": spoiler.settings.points_list_training_moves,
+            "training_moves": spoiler.settings.points_list_training_fairy,
             "important_shared_moves": spoiler.settings.points_list_important_shared,
             "bean": spoiler.settings.points_list_bean,
         }
@@ -2221,7 +2221,7 @@ def compileSpoilerHints(spoiler):
             + " | Barrel Moves: "
             + str(spoiler.settings.points_list_barrel_moves)
             + " | Training Moves: "
-            + str(spoiler.settings.points_list_training_moves)
+            + str(spoiler.settings.points_list_training_fairy)
             + " | Shared Moves: "
             + str(spoiler.settings.points_list_important_shared)
             + " | Bean: "
@@ -2268,11 +2268,13 @@ def PointValueOfItem(settings, item_id):
     elif item_id in [Items.StrongKong, Items.RocketbarrelBoost, Items.OrangstandSprint, Items.MiniMonkey, Items.HunkyChunky]:
         return settings.points_list_barrel_moves
     elif item_id in ItemPool.TrainingBarrelAbilities():
-        return settings.points_list_training_moves
+        return settings.points_list_training_fairy
     elif item_id in ItemPool.ImportantSharedMoves:
         return settings.points_list_important_shared
     elif item_id == Items.Bean:
         return settings.points_list_bean
+    elif item_id in ItemPool.ShockwaveTypeItems(settings):
+        return settings.points_list_training_fairy  # This will be changed to an independent option later
     return 0
 
 

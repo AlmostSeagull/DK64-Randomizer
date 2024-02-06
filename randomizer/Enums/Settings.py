@@ -913,7 +913,7 @@ class SettingsStringEnum(IntEnum):
     points_list_keys = 140
     points_list_guns = 141
     points_list_instruments = 142
-    points_list_training_moves = 143
+    points_list_training_fairy = 143
     points_list_important_shared = 144
     points_list_pad_moves = 145
     points_list_barrel_moves = 146
@@ -1124,7 +1124,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.points_list_keys: SettingsStringDataType.int16,
     SettingsStringEnum.points_list_guns: SettingsStringDataType.int16,
     SettingsStringEnum.points_list_instruments: SettingsStringDataType.int16,
-    SettingsStringEnum.points_list_training_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_training_fairy: SettingsStringDataType.int16,
     SettingsStringEnum.points_list_important_shared: SettingsStringDataType.int16,
     SettingsStringEnum.points_list_pad_moves: SettingsStringDataType.int16,
     SettingsStringEnum.points_list_barrel_moves: SettingsStringDataType.int16,
