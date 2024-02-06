@@ -96,4 +96,4 @@ PointSpreadBase = [
     ("Bean", 3),
 ]
 for item in PointSpreadBase:
-    PointSpreadSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_").replace("Training/Fairy", "training_moves"), "tooltip": "", "default": item[1]})
+    PointSpreadSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_").replace("training/fairy", "training_moves"), "tooltip": "", "default": item[1]})
