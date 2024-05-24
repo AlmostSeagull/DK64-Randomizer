@@ -442,9 +442,11 @@ def compileHints(spoiler: Spoiler) -> bool:
     ClearHintMessages()
     hint_distribution = hint_distribution_default.copy()
     plando_hints_placed = 0
-    if spoiler.settings.enable_plandomizer:
+    if spoiler.settings.enable_plandomizer or True:
         plando_hints_placed = ApplyPlandoHints(spoiler)
         hint_distribution[HintType.Plando] = plando_hints_placed
+        UpdateSpoilerHintList(spoiler)
+        return True
     level_order_matters = spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
     globally_hinted_location_ids = []
     # Stores the number of hints each key will get
@@ -2427,6 +2429,43 @@ def ApplyColorToPlandoHint(hint):
 def ApplyPlandoHints(spoiler):
     """Apply plandomizer hint messages, returning the number of hints placed."""
     plando_hints_placed = 0
+    spoiler.settings.plandomizer_dict["hints"] = {
+            "495": "Something in the Forest Center and Beanstalk is on the path to Keys 6 and 8 and K. Rool vs. Lanky and Donkey.",
+            "496": "Tiny is held by a kasplat in Jungle Japes.",
+            "497": "Something in the Castle Surroundings is on the path to Key 6.",
+            "498": "Bongos is on the path to Key 6 and K. Rool vs. Donkey.",
+            "499": "Something in the 5 Door Temple is on the path to Keys 6 and 8 and K. Rool vs. Diddy and Donkey.",
+            "500": "Something in the Galleon Shops is on the path to Key 8.",
+            "501": "Isles Donkey Caves Lava is on the Way of the Hoard.",
+            "502": "Donkey can be found by Tiny in DK Isles.",
+            "503": "Something in the Forest Medal Rewards is on the path to Keys 6 and 8 and K. Rool vs. Lanky, Diddy, and Donkey.",
+            "504": "Scouring the Castle Underground will yield you 3 potions.",
+            "505": "It would be foolish to explore the Main Isle.",
+            "506": "Forest Diddy Top of Mushroom Barrel is on the Way of the Hoard.",
+            "507": "Something in the Forest Medal Rewards is on the path to Key 2.",
+            "508": "Something in the Giant Mushroom Insides is on the path to Keys 6 and 8 and K. Rool vs. Donkey.",
+            "509": "Something in the Isles Shops is on the path to Key 4.",
+            "510": "Lanky can be found by Diddy in Angry Aztec.",
+            "511": "Forest Chunky Minecart is on the Way of the Hoard.",
+            "512": "It would be foolish to explore the Production Room.",
+            "513": "Something in the Isles Shops is on the path to Key 7.",
+            "514": "Something in the Japes-Forest Lobbies is on the path to Key 6 and K. Rool vs. Donkey.",
+            "515": "Something in the Giant Mushroom Insides is on the path to Keys 6 and 8 and K. Rool vs. Lanky and Donkey.",
+            "516": "Something in the Tiny Temple is on the path to Key 6 and K. Rool vs. Donkey.",
+            "517": "Something in the Caves Shops is on the path to Keys 6 and 8 and K. Rool vs. Lanky, Diddy, and Donkey.",
+            "518": "Something in the Castle Underground is on the path to Keys 6 and 8 and K. Rool vs. Diddy and Donkey.",
+            "519": "Something in the Krem Isle is on the path to Keys 6 and 8 and K. Rool vs. Lanky and Donkey.",
+            "520": "Caves Diddy Medal is on the Way of the Hoard.",
+            "521": "Something in the Troff 'N' Scoff is on the path to Keys 6 and 8 and K. Rool vs. Lanky, Diddy, and Donkey.",
+            "522": "Scouring the 5 Door Ship will yield you 1 potion.",
+            "523": "It would be foolish to explore the Treasure Room.",
+            "524": "Factory Diddy Storage Room Barrel is on the Way of the Hoard.",
+            "525": "Castle Lanky Dungeon is on the Way of the Hoard.",
+            "526": "Something in the Various Aztec Tunnels is on the path to Keys 6 and 8 and K. Rool vs. Diddy and Donkey.",
+            "527": "Something in the Cabins Area is on the path to Keys 6 and 8 and K. Rool vs. Lanky and Donkey.",
+            "528": "Galleon Lanky 5 Door Ship is on the Way of the Hoard.",
+            "529": "Something in the Japes Shops is on the path to Key 5."
+        }
     for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
         if message != "":
             final_message = ApplyColorToPlandoHint(message)
