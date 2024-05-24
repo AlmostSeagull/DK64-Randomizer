@@ -447,6 +447,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         hint_distribution[HintType.Plando] = plando_hints_placed
         UpdateSpoilerHintList(spoiler)
         return True
+    
+def unusedFunction427(spoiler: Spoiler) -> bool:
+    plando_hints_placed = 0
     level_order_matters = spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
     globally_hinted_location_ids = []
     # Stores the number of hints each key will get
@@ -2429,42 +2432,55 @@ def ApplyColorToPlandoHint(hint):
 def ApplyPlandoHints(spoiler):
     """Apply plandomizer hint messages, returning the number of hints placed."""
     plando_hints_placed = 0
+    level_colors = ["\x08", "\x04", "\x0c", "\x06", "\x07", "\x0a", "\x09", "\x05", "\x0b", "\x0d"]
+    level_list = [
+        "Jungle Japes","\x08",
+        "Angry Aztec","\x04",
+        "Frantic Factory","\x0c",
+        "Gloomy Galleon","\x06",
+        "Fungi Forest","\x07",
+        "Crystal Caves","\x0a",
+        "Creepy Castle","\x09",
+        "Hideout Helm","\x05",
+        "DK Isles","\x0b",
+        "Cranky's Lab","\x0d",
+    ]
     spoiler.settings.plandomizer_dict["hints"] = {
-            "495": "Something in the Forest Center and Beanstalk is on the path to Keys 6 and 8 and K. Rool vs. Lanky and Donkey.",
-            "496": "Tiny is held by a kasplat in Jungle Japes.",
-            "497": "Something in the Castle Surroundings is on the path to Key 6.",
-            "498": "Bongos is on the path to Key 6 and K. Rool vs. Donkey.",
-            "499": "Something in the 5 Door Temple is on the path to Keys 6 and 8 and K. Rool vs. Diddy and Donkey.",
-            "500": "Something in the Galleon Shops is on the path to Key 8.",
-            "501": "Isles Donkey Caves Lava is on the Way of the Hoard.",
-            "502": "Donkey can be found by Tiny in DK Isles.",
-            "503": "Something in the Forest Medal Rewards is on the path to Keys 6 and 8 and K. Rool vs. Lanky, Diddy, and Donkey.",
-            "504": "Scouring the Castle Underground will yield you 3 potions.",
-            "505": "It would be foolish to explore the Main Isle.",
-            "506": "Forest Diddy Top of Mushroom Barrel is on the Way of the Hoard.",
-            "507": "Something in the Forest Medal Rewards is on the path to Key 2.",
-            "508": "Something in the Giant Mushroom Insides is on the path to Keys 6 and 8 and K. Rool vs. Donkey.",
-            "509": "Something in the Isles Shops is on the path to Key 4.",
-            "510": "Lanky can be found by Diddy in Angry Aztec.",
-            "511": "Forest Chunky Minecart is on the Way of the Hoard.",
-            "512": "It would be foolish to explore the Production Room.",
-            "513": "Something in the Isles Shops is on the path to Key 7.",
-            "514": "Something in the Japes-Forest Lobbies is on the path to Key 6 and K. Rool vs. Donkey.",
-            "515": "Something in the Giant Mushroom Insides is on the path to Keys 6 and 8 and K. Rool vs. Lanky and Donkey.",
-            "516": "Something in the Tiny Temple is on the path to Key 6 and K. Rool vs. Donkey.",
-            "517": "Something in the Caves Shops is on the path to Keys 6 and 8 and K. Rool vs. Lanky, Diddy, and Donkey.",
-            "518": "Something in the Castle Underground is on the path to Keys 6 and 8 and K. Rool vs. Diddy and Donkey.",
-            "519": "Something in the Krem Isle is on the path to Keys 6 and 8 and K. Rool vs. Lanky and Donkey.",
-            "520": "Caves Diddy Medal is on the Way of the Hoard.",
-            "521": "Something in the Troff 'N' Scoff is on the path to Keys 6 and 8 and K. Rool vs. Lanky, Diddy, and Donkey.",
-            "522": "Scouring the 5 Door Ship will yield you 1 potion.",
-            "523": "It would be foolish to explore the Treasure Room.",
-            "524": "Factory Diddy Storage Room Barrel is on the Way of the Hoard.",
-            "525": "Castle Lanky Dungeon is on the Way of the Hoard.",
-            "526": "Something in the Various Aztec Tunnels is on the path to Keys 6 and 8 and K. Rool vs. Diddy and Donkey.",
-            "527": "Something in the Cabins Area is on the path to Keys 6 and 8 and K. Rool vs. Lanky and Donkey.",
-            "528": "Galleon Lanky 5 Door Ship is on the Way of the Hoard.",
-            "529": "Something in the Japes Shops is on the path to Key 5."
+            "495": "Something in the \x07Forest Center and Beanstalk\x07 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06 and \x04Donkey\x04.",
+            "496": "\x07Tiny\x07 is held by \x06a kasplat\x06 in \x08Jungle Japes\x08.",
+            "497": "Something in the \x09Castle Surroundings\x09 is on the path to \x04Key 6\x04.",
+            "498": "\x0bBongos\x0b is on the path to \x04Key 6\x04 and \x0dK. Rool vs.\x0d \x04Donkey\x04.",
+            "499": "Something in the \x045 Door Temple\x04 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x05Diddy\x05 and \x04Donkey\x04.",
+            "500": "Something in the \x0dGalleon Shops\x0d is on the path to \x04Key 8\x04.",
+            "501": "\x0dIsles Donkey Caves Lava\x0d is on the \x04Way of the Hoard\x04.",
+            "502": "\x04Donkey\x04 can be found by \x07Tiny\x07 in \x0bDK Isles\x0b.",
+            "503": "Something in the \x07Forest Medal Rewards\x07 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04.",
+            "504": "Scouring the \x09Castle Underground\x09 will yield you \x0d3 potions\x0d.",
+            "505": "It would be \x05foolish\x05 to explore the \x0bMain Isle\x0b.",
+            "506": "\x07Forest Diddy Top of Mushroom Barrel\x07 is on the \x04Way of the Hoard\x04.",
+            "507": "Something in the \x07Forest Medal Rewards\x07 is on the path to \x04Key 2\x04.",
+            "508": "Something in the \x07Giant Mushroom Insides\x07 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x04Donkey\x04.",
+            "509": "Something in the \x0dIsles Shops\x0d is on the path to \x04Key 4\x04.",
+            "510": "\x06Lanky\x06 can be found by \x05Diddy\x05 in Angry Aztec.",
+            "511": "\x07Forest Chunky Minecart\x07 is on the \x04Way of the Hoard\x04.",
+            "512": "It would be \x05foolish\x05 to explore the Production Room.",
+            "513": "Something in the \x0dIsles Shops\x0d is on the path to \x04Key 7\x04.",
+            "514": "Something in the \x0bJapes-Forest Lobbies\x0b is on the path to \x04Key 6\x04 and \x0dK. Rool vs.\x0d \x04Donkey\x04.",
+            "515": "Something in the \x07Giant Mushroom Insides\x07 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06 and \x04Donkey\x04.",
+            "516": "Something in the \x04Tiny Temple\x04 is on the path to \x04Key 6\x04 and \x0dK. Rool vs.\x0d \x04Donkey\x04.",
+            "517": "Something in the \x0dCaves Shops\x0d is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04.",
+            "518": "Something in the \x09Castle Underground\x09 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x05Diddy\x05 and \x04Donkey\x04.",
+            "519": "Something in the \x0bKrem Isle\x0b is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06 and \x04Donkey\x04.",
+            "520": "\x0aCaves Diddy Medal\x0a is on the \x04Way of the Hoard\x04.",
+            "521": "Something in the \x0bTroff 'N' Scoff\x0b is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04.",
+            "522": "Scouring the \x065 Door Ship\x06 will yield you \x0d1 potion\x0d.",
+            "523": "It would be \x05foolish\x05 to explore the \x06Treasure Room\x06.",
+            "524": "\x0cFactory Diddy Storage Room Barrel\x0c is on the \x04Way of the Hoard\x04.",
+            "525": "\x09Castle Lanky Dungeon\x09 is on the \x04Way of the Hoard\x04.",
+            "526": "Something in the \x04Various Aztec Tunnels\x04 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x05Diddy\x05 and \x04Donkey\x04.",
+            "527": "Something in the \x0aCabins Area\x0a is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06 and \x04Donkey\x04.",
+            "528": "\x06Galleon Lanky 5 Door Ship\x06 is on the \x04Way of the Hoard\x04.",
+            "529": "Something in the \x0dJapes Shops\x0d is on the path to \x04Key 5\x04."
         }
     for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
         if message != "":
