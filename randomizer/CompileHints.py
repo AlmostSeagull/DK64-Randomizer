@@ -2464,13 +2464,13 @@ def ApplyPlandoHints(spoiler):
             "510": "\x06Lanky\x06 can be found by \x05Diddy\x05 in Angry Aztec.",
             "511": "\x07Forest Chunky Minecart\x07 is on the \x04Way of the Hoard\x04.",
             "512": "It would be \x05foolish\x05 to explore the Production Room.",
-            "513": "Something in the \x0dIsles Shops\x0d is on the path to \x04Key 7\x04.",
-            "514": "Something in the \x0bJapes-Forest Lobbies\x0b is on the path to \x04Key 6\x04 and \x0dK. Rool vs.\x0d \x04Donkey\x04.",
-            "515": "Something in the \x07Giant Mushroom Insides\x07 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06 and \x04Donkey\x04.",
-            "516": "Something in the \x04Tiny Temple\x04 is on the path to \x04Key 6\x04 and \x0dK. Rool vs.\x0d \x04Donkey\x04.",
-            "517": "Something in the \x0dCaves Shops\x0d is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04.",
-            "518": "Something in the \x09Castle Underground\x09 is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x05Diddy\x05 and \x04Donkey\x04.",
-            "519": "Something in the \x0bKrem Isle\x0b is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06 and \x04Donkey\x04.",
+            "513": "Something in the \x0dIsles Shops\x0d is on the path to \x0dKey 7\x0d.",
+            "514": "Something in the \x0dJapes-Forest Lobbies\x0d is on the path to \x0dKey 6\x0d and \x0dK. Rool vs.\x0d \x0dDonkey\x0d.",
+            "515": "Something in the \x0dGiant Mushroom Insides\x0d is on the path to \x0dKeys 6 and 8\x0d and \x0dK. Rool vs.\x0d \x0dLanky\x0d and \x0dDonkey\x0d.",
+            "516": "Something in the \x0dTiny Temple\x0d is on the path to \x0dKey 6\x0d and \x0dK. Rool vs.\x0d \x0dDonkey\x0d.",
+            "517": "Something in the \x0dCaves Shops\x0d is on the path to \x0dKeys 6 and 8\x0d and \x0dK. Rool vs.\x0d \x0dLanky\x0d, \x0dDiddy\x0d, and \x0dDonkey\x0d.",
+            "518": "Something in the \x0dCastle Underground\x0d is on the path to \x0dKeys 6 and 8\x0d and \x0dK. Rool vs.\x0d \x0dDiddy\x0d and \x0dDonkey\x0d.",
+            "519": "Something in the \x0dKrem Isle\x0d is on the path to \x0dKeys 6 and 8\x0d and \x0dK. Rool vs.\x0d \x0dLanky\x0d and \x0dDonkey\x0d.",
             "520": "\x0aCaves Diddy Medal\x0a is on the \x04Way of the Hoard\x04.",
             "521": "Something in the \x0bTroff 'N' Scoff\x0b is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04.",
             "522": "Scouring the \x065 Door Ship\x06 will yield you \x0d1 potion\x0d.",
@@ -2483,8 +2483,10 @@ def ApplyPlandoHints(spoiler):
             "529": "Something in the \x0dJapes Shops\x0d is on the path to \x04Key 5\x04."
         }
     for key in spoiler.settings.plandomizer_dict["hints"]:
-        if int(key) < 499:
+        if int(key) < 498 or int(key) in [525, 520, 521, 515, 516, 517]:
             spoiler.settings.plandomizer_dict["hints"][key] = "Mornin Somethings in the \x0dCaves Shops\x0d is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04."
+        else:
+            spoiler.settings.plandomizer_dict["hints"][key] = ""
     for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
         if message != "":
             final_message = ApplyColorToPlandoHint(message)
