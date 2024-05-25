@@ -2482,6 +2482,9 @@ def ApplyPlandoHints(spoiler):
             "528": "\x06Galleon Lanky 5 Door Ship\x06 is on the \x04Way of the Hoard\x04.",
             "529": "Something in the \x0dJapes Shops\x0d is on the path to \x04Key 5\x04."
         }
+    for key in spoiler.settings.plandomizer_dict["hints"]:
+        if int(key) < 499:
+            spoiler.settings.plandomizer_dict["hints"][key] = "Mornin Somethings in the \x0dCaves Shops\x0d is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04."
     for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
         if message != "":
             final_message = ApplyColorToPlandoHint(message)
