@@ -2483,10 +2483,10 @@ def ApplyPlandoHints(spoiler):
             "529": "Something in the \x0dJapes Shops\x0d is on the path to \x04Key 5\x04."
         }
     for key in spoiler.settings.plandomizer_dict["hints"]:
-        if int(key) < 498 or int(key) in [525, 520, 521, 515, 516, 517]:
+        if int(key) < 510:
             spoiler.settings.plandomizer_dict["hints"][key] = "Mornin Somethings in the \x0dCaves Shops\x0d is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04."
         else:
-            spoiler.settings.plandomizer_dict["hints"][key] = ""
+            spoiler.settings.plandomizer_dict["hints"][key] = "Mornin Somethings in the Caves Shops is on the path to Keys 6 and 8 and K. Rool vs. Lanky, Diddy, and Donkey.Mornin Somethings"
     for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
         if message != "":
             final_message = ApplyColorToPlandoHint(message)
