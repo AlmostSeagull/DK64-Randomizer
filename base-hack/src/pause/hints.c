@@ -237,7 +237,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep, int opacity) {
     }
     int string_copy_ref = (int)string_copy;
     wipeMemory(string_copy, STRING_MAX_SIZE);
-    dk_memcpy(string_copy, str, string_length);
+    dk_memcpy(string_copy, str, string_length); // This means that the max string length is *including* control characters
     if (trigger_ellipsis) {
         string_copy[ELLIPSIS_CUTOFF] = 0x2E;
         string_copy[ELLIPSIS_CUTOFF + 1] = 0x2E;
