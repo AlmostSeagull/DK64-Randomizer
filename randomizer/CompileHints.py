@@ -2467,7 +2467,7 @@ def ApplyPlandoHints(spoiler):
             "513": "groot nieuws bij \x0dfruitsalade\x0d er is een pad net \x0dBij 8\x0d.",
             "514": "goede deals voor \x0dbietensalade en kool\x0d nu voor maar vier \x0dvan 5\x0d bij \x0dsuper markt\x0d \x0dslapen\x0d.",
             "515": "Soms gaan dingen \x0danders dan mogelijk de\x0d bedoeling gegeven \x0dde vraag zij\x0d dus \x0ddeze zin is\x0d \x0dveren\x0d wol \x0dverven\x0d.",
-            "516": "Something in the \x0dTiny Temple\x0d is on the path to \x0dKey 6\x0d and \x0dK. Rool vs.\x0d \x0dDonkey\x0d.",
+            "516": "Diamond painings \x0dTelefoon en\x0d boeken en telecom \x0dterug\x0d pek \x0dK. Rool vs.\x0d \x0dDonkey\x0d.",
             "516": "Something in the \x0dTiny Temple\x0d is on the path to \x0dKey 6\x0d and \x0dK. Rool vs.\x0d \x0dDonkey\x0d.",
             "517": "Something in the \x0dCaves Shops\x0d is on the path to \x0dKeys 6 and 8\x0d and \x0dK. Rool vs.\x0d \x0dLanky\x0d, \x0dDiddy\x0d, and \x0dDonkey\x0d.",
             "517": "Something in the \x0dCaves Shops\x0d is on the path to \x0dKeys 6 and 8\x0d and \x0dK. Rool vs.\x0d \x0dLanky\x0d, \x0dDiddy\x0d, and \x0dDonkey\x0d.",
@@ -2497,10 +2497,10 @@ def ApplyPlandoHints(spoiler):
             "529": "Something in the \x0dJapes Shops\x0d is on the path to \x04Key 5\x04."
         }
     for key in spoiler.settings.plandomizer_dict["hints"]:
-        if int(key) < 510:
-            spoiler.settings.plandomizer_dict["hints"][key] = "Mornin Somethings in the \x0dCaves Shops\x0d is on the path to \x04Keys 6 and 8\x04 and \x0dK. Rool vs.\x0d \x06Lanky\x06, \x05Diddy\x05, and \x04Donkey\x04."
+        if int(key) % 5 < 3:
+            spoiler.settings.plandomizer_dict["hints"][key] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAA"
         else:
-            spoiler.settings.plandomizer_dict["hints"][key] = "Mornin Somethings in the Caves Shops is on the path to Keys 6 and 8 and K. Rool vs. Lanky, Diddy, and Donkey.Mornin Somethings"
+            spoiler.settings.plandomizer_dict["hints"][key] = ""
     for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
         if message != "":
             final_message = ApplyColorToPlandoHint(message)
