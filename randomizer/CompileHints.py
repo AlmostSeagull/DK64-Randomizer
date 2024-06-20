@@ -2497,7 +2497,7 @@ def ApplyPlandoHints(spoiler):
             "529": "Something in the \x0dJapes Shops\x0d is on the path to \x04Key 5\x04."
         }
     for key in spoiler.settings.plandomizer_dict["hints"]:
-        if int(key) % 5 < 3:
+        if int(key) != 503:
             spoiler.settings.plandomizer_dict["hints"][key] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAA"
         else:
             spoiler.settings.plandomizer_dict["hints"][key] = ""
