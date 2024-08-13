@@ -343,14 +343,14 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Outside Diddy Cave Switch - left",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JungleJapesStart,
             location=[2133.0, 280.0, 421.0, 1.0],
             group=2,
         ),
         DoorData(
             name="Jungle Japes: Outside Diddy Cave Switch - right",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JungleJapesStart,
             location=[2119.0, 280.0, 599.0, 180.0],
             group=2,
         ),
@@ -707,7 +707,7 @@ door_locations = {
         DoorData(
             name="Angry Aztec: Cranky Tunnel - Near Chunky Barrel - left",
             map=Maps.AngryAztec,
-            logicregion=Regions.AngryAztecMain,
+            logicregion=Regions.AngryAztecConnectorTunnel,
             location=[3182.5, 120.0, 1440.0, 41.0],
             group=7,
             moveless=False,
@@ -715,7 +715,7 @@ door_locations = {
         DoorData(
             name="Angry Aztec: Cranky Tunnel - Near Chunky Barrel - right",
             map=Maps.AngryAztec,
-            logicregion=Regions.AngryAztecMain,
+            logicregion=Regions.AngryAztecConnectorTunnel,
             location=[3358.0, 120.0, 1445.5, 318.5],
             group=7,
             moveless=False,
@@ -723,7 +723,7 @@ door_locations = {
         DoorData(
             name="Angry Aztec: Cranky Tunnel - Near Road to Cranky - left",
             map=Maps.AngryAztec,
-            logicregion=Regions.AngryAztecMain,
+            logicregion=Regions.AngryAztecConnectorTunnel,
             location=[3366.8, 120.0, 2032.0, 241.43],
             group=7,
             moveless=False,
@@ -731,7 +731,7 @@ door_locations = {
         DoorData(
             name="Angry Aztec: Cranky Tunnel - Near Road to Cranky - right",
             map=Maps.AngryAztec,
-            logicregion=Regions.AngryAztecMain,
+            logicregion=Regions.AngryAztecConnectorTunnel,
             location=[3166.25, 120.0, 2028.0, 118.5],
             group=7,
             moveless=False,
@@ -755,14 +755,14 @@ door_locations = {
         DoorData(
             name="Angry Aztec: Entrance Tunnel - next to Coconut Switch",
             map=Maps.AngryAztec,
-            logicregion=Regions.AngryAztecOasis,
+            logicregion=Regions.AztecTunnelBeforeOasis,
             location=[1514.0, 120.0, 1107.8, 4.8],
             group=8,
         ),
         DoorData(
             name="Angry Aztec: Entrance Tunnel - left (near the oasis end)",
             map=Maps.AngryAztec,
-            logicregion=Regions.AngryAztecOasis,
+            logicregion=Regions.AztecTunnelBeforeOasis,
             location=[1820.0, 120.0, 816.5, 19.0],
             group=8,
         ),
@@ -1237,7 +1237,7 @@ door_locations = {
         DoorData(
             name="Frantic Factory: Production Room - Next to Diddy's Switch",
             map=Maps.FranticFactory,
-            logicregion=Regions.BeyondHatch,
+            logicregion=Regions.LowerCore,
             location=[430.6, 0.0, 980.6, 45.0],
             group=3,
         ),
@@ -1900,7 +1900,7 @@ door_locations = {
         DoorData(
             name="Fungi Forest: On top of Cage outside Conveyor Belt",
             map=Maps.FungiForest,
-            logicregion=Regions.MillArea,
+            logicregion=Regions.ForestTopOfMill,
             location=[4312.0, 224.0, 3493.0, 134.82],
             group=4,
         ),
@@ -1928,7 +1928,7 @@ door_locations = {
         DoorData(
             name="Fungi Forest: Watermill Roof - tower",
             map=Maps.FungiForest,
-            logicregion=Regions.MillArea,
+            logicregion=Regions.ForestTopOfMill,
             location=[4444.0, 321.0, 3628.0, 316.0],
             rx=-4,
             group=4,
@@ -2111,7 +2111,7 @@ door_locations = {
         # DoorData(
         #     name="Fungi Forest: Inside the Mushroom - Along the Wall near Diddy's Kasplat",
         #     map=Maps.ForestGiantMushroom,
-        #     logicregion=Regions.MushroomUpper,
+        #     logicregion=Regions.MushroomMiddle,
         #     location=[396.0, 610.0, 929.0, 174.0],
         #     group=5,
         # ),
