@@ -426,6 +426,8 @@ extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);
 extern void snideCodeHandler(void);
 
+extern int canPlayerClimb(void);
+
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void playBalloonWhoosh(int path_index, float* x, float* y, float* z);
 
@@ -487,3 +489,4 @@ extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
 extern const collision_tree_struct fixed_dice_collision[12];
 extern const collision_tree_struct fixed_klap_collision[8];
+extern const collision_tree_struct fixed_bug_collision[2];

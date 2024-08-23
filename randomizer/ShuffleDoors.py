@@ -41,6 +41,13 @@ def GetDoorLocationForKongAndLevel(kong, level):
     return Locations(baseOffset + (5 * levelOffset) + int(kong))
 
 
+def UpdateDoorLevels(spoiler):
+    for region in spoiler.RegionList:
+        for location_logic in spoiler.RegionList[region].locations:
+            if spoiler.LocationList[location_logic.id].type == Types.Hint:
+                spoiler.LocationList[location_logic.id].level = spoiler.RegionList[region].level
+
+
 def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Handle initial settings
@@ -98,6 +105,9 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
             if shuffle_dkportal:
                 if door.placed == DoorType.dk_portal:
                     door.placed = DoorType.null
+            # Reset door lists
+            door.door_type = door.default_door_list.copy()
+            door.updateDoorTypeLogic(spoiler)
     # If we already placed vanilla doors, we've already saved some data we need to preserve post-reset
     if vanilla_doors_placed:
         shuffled_door_data = spoiler.shuffled_door_data

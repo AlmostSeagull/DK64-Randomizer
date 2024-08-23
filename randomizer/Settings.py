@@ -612,6 +612,8 @@ class Settings:
         self.cb_rando = CBRando.off
         self.coin_rando = False
         self.crown_placement_rando = False
+        self.bananaport_placement_rando = ShufflePortLocations.off
+        self.useful_bananaport_placement = True
         self.override_cosmetics = True
         self.random_colors = False
         self.hard_level_progression = False
@@ -974,9 +976,15 @@ class Settings:
         wincon_items = {
             WinConditionComplex.beat_krool: HelmDoorInfo(
                 1,
-                HelmDoorRandomInfo(1, 1, 0.1),
-                HelmDoorRandomInfo(1, 1, 0.1),
-                HelmDoorRandomInfo(1, 1, 0.05),
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
+            ),
+            WinConditionComplex.dk_rap_items: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.02),
             ),
             WinConditionComplex.krem_kapture: HelmDoorInfo(
                 1,
@@ -1153,18 +1161,20 @@ class Settings:
             # Place planned phases and clear out others
             for i in range(len(phases)):
                 if self.plandomizer_dict["plando_krool_order_" + str(i)] != -1:  # Note that input validation guarantees this key exists in this dict
-                    phases[i] = Kongs(self.plandomizer_dict["plando_krool_order_" + str(i)])
-                    planned_phases.append(Kongs(self.plandomizer_dict["plando_krool_order_" + str(i)]))
+                    phases[i] = Maps(self.plandomizer_dict["plando_krool_order_" + str(i)])
+                    planned_phases.append(Maps(self.plandomizer_dict["plando_krool_order_" + str(i)]))
                 else:
-                    phases[i] = Kongs.any
+                    phases[i] = None
             # Fill cleared out phases with available phases
             for i in range(len(phases)):
-                if phases[i] == Kongs.any:
-                    available_phases = [kong for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky] if kong not in planned_phases]
+                if phases[i] is None:
+                    available_phases = [
+                        map_id for map_id in [Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase] if map_id not in planned_phases
+                    ]
                     phases[i] = random.choice(available_phases)
                     planned_phases.append(phases[i])
             for i in range(len(phases)):
-                phases[i] = int(int(phases[i]) + int(Maps.KroolDonkeyPhase))
+                phases[i] = int(phases[i])
         orderedPhases = []
         # TODO: Fix logic (lol)
         for map_id in phases:

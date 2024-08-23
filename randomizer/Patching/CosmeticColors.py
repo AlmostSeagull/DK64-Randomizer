@@ -272,7 +272,7 @@ spotlight_fish_models = [
     Model.SirDomino,
     # Model.MrDice_41,  # Lighting issue
     # Model.Ruler, # Lighting issue
-    Model.RoboKremling,
+    # Model.RoboKremling, # Lighting isuse
     Model.NintendoLogo,
     Model.MechanicalFish,
     Model.ToyCar,
@@ -291,7 +291,7 @@ spotlight_fish_models = [
     # Model.Bat, # Lighting bug
     # Model.Tomato, # Lighting bug
     # Model.IceTomato, # Lighting bug
-    Model.FlySwatter_83,
+    # Model.FlySwatter_83, # Lighting bug
     Model.SpotlightFish,
     Model.Microphone,
     Model.Rocketbarrel,
@@ -3364,6 +3364,11 @@ def showWinCondition(settings: Settings):
         return
     if win_con == WinConditionComplex.krem_kapture:
         item_im = getImageFile(14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
+        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
+        return
+    if win_con == WinConditionComplex.dk_rap_items:
+        item_im = getImageFile(7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
+        item_im = item_im.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
         writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551)
         return
     win_con_data = {

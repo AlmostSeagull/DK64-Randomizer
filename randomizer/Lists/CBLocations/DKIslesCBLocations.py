@@ -229,7 +229,7 @@ ColoredBananaGroupList = [
         name="Banana hoard tunnel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
-        logic=lambda l: l.can_use_vines,
+        logic=lambda l: l.can_use_vines and l.climbing,
         locations=[
             [1, 1.0, 2073, 211, 1180],
             [1, 1.0, 2125, 211, 1201],
@@ -249,7 +249,7 @@ ColoredBananaGroupList = [
         name="Banana hoard room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.TrainingGrounds,
-        logic=lambda l: l.can_use_vines,
+        logic=lambda l: l.can_use_vines and l.climbing,
         locations=[
             [5, 1.0, 2422, 216, 1108],
             [5, 1.0, 2422, 216, 954],
@@ -1056,7 +1056,7 @@ ColoredBananaGroupList = [
         group=79,
         map_id=Maps.Isles,
         name="On top of K.Lumsy's prison",
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.KremIsle,
         logic=lambda l: (
             (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko)))
