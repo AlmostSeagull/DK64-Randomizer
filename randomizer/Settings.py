@@ -832,7 +832,7 @@ class Settings:
 
         # Move Location Rando
         if self.move_rando == MoveRando.start_with:
-            self.starting_moves_count = 41
+            self.starting_moves_count = 42
             self.training_barrels = TrainingBarrels.normal
             self.shockwave_status = ShockwaveStatus.start_with
 
@@ -1618,6 +1618,9 @@ class Settings:
         if self.enable_progressive_hints and not (Types.Hint in self.shuffled_location_types):
             for location_id in WrinklyHintLocations:
                 spoiler.LocationList[location_id].inaccessible = True
+
+        if self.training_barrels != TrainingBarrels.normal:
+            spoiler.LocationList[Locations.IslesClimbing].inaccessible = True
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
