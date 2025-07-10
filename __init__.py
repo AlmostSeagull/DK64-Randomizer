@@ -453,7 +453,7 @@ if baseclasses_loaded:
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
                 self.spoiler.UpdateExits()
-            
+
             # Handle hint preparation by initiating some variables
             self.major_item_locations = []
             self.woth_item_locations = []
@@ -567,7 +567,7 @@ if baseclasses_loaded:
                     major_count = 7
                     deep_count = 8
 
-                    # Creating the hints 
+                    # Creating the hints
                     # pre-creating is... a choice that I made. I don't like the idea of CompileHints knowing what a multiworld is
                     # I should create an AP Hints.py file
                     woth_hints = self.parseDirectItemHints(self.woth_item_locations)
@@ -575,12 +575,12 @@ if baseclasses_loaded:
                     deep_hints = self.parseDeepHints(self.deep_location_items)
                     woth_hints = self.spoiler.settings.random.sample(woth_hints, min(woth_count, len(woth_hints)))
                     if len(woth_hints) < woth_count:
-                        major_count += (woth_count - len(woth_hints))
-                        deep_count += (woth_count - len(woth_hints))
+                        major_count += woth_count - len(woth_hints)
+                        deep_count += woth_count - len(woth_hints)
                     woth_hints = woth_hints + woth_hints
                     major_hints = self.spoiler.settings.random.sample(major_hints, min(major_count, len(major_hints)))
                     if len(major_hints) < major_count:
-                        deep_count += (major_count - len(major_hints))
+                        deep_count += major_count - len(major_hints)
                     if len(deep_hints) < deep_count:
                         print(f"Deep count too high: {deep_count} for {len(deep_hints)}. {woth_count}, {major_count}")
                     deep_hints = self.spoiler.settings.random.sample(deep_hints, deep_count)
@@ -635,6 +635,7 @@ if baseclasses_loaded:
 
         @classmethod
         def stage_generate_output(cls, multiworld: MultiWorld, output_directory: str):
+            """Prepare hint data."""
             # Microhint stuff
             microHintItemNames = {
                 "Progressive Slam": DK64RItems.ProgressiveSlam,
@@ -708,7 +709,7 @@ if baseclasses_loaded:
                     "Castle Donkey Tree Sniping",
                     "Castle Chunky Tree Sniping Barrel",
                 ]
-                
+
                 # Look through every location in the multiworld and find all the DK64 items that are progression
                 # Also gather any information on microhinted items
                 # Also also gather information about which locations have junk items or no items
@@ -730,11 +731,11 @@ if baseclasses_loaded:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name])
-                            else:    
-                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name]      
+                            else:
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name]
                     if locworld.location_starts_empty(loc):
                         locworld.junked_locations.append(loc.name)
-            
+
             except Exception as e:
                 raise e
             finally:
@@ -911,7 +912,7 @@ if baseclasses_loaded:
             # Junk item
             if item_obj is None:
                 print(location.item.name)
-                a = 1/0
+                a = 1 / 0
             if item_obj.type == Types.JunkItem:
                 # In a location that can't have junk
                 if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type != Types.Key or loc_obj.level == Levels.HideoutHelm):
@@ -932,7 +933,7 @@ if baseclasses_loaded:
                         text.replace(letter, " ")
                 hints.append(text)
             return hints
-        
+
         def parseDeepHints(self, locations_to_hint: list) -> list:
             """Write deep item hints for the given list of locations."""
             hints = []
@@ -947,7 +948,6 @@ if baseclasses_loaded:
                         text.replace(letter, " ")
                 hints.append(text)
             return hints
-
 
         def collect(self, state: CollectionState, item: Item) -> bool:
             """Collect the item."""
