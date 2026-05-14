@@ -41,6 +41,7 @@ ROM_DATA static int player_x = 3;
 ROM_DATA static int player_y = 3;
 ROM_DATA static int totem_x = 21;
 ROM_DATA static int totem_y = 21;
+ROM_DATA static char shortestDirections[5] = {};
 ROM_DATA static int debug = 0;
 ROM_DATA static int debug2 = 0;
 ROM_DATA static unsigned char ending_timer = 0;
@@ -66,6 +67,17 @@ void placeBox(void) {
             return;
         }
     }
+}
+
+void shortestDirAddDir(direction dir){
+    shortestDirections[dir] = 1;
+}
+
+void shortestDirSetNew(direction dir){
+    for(int i = 0; i < 5; i++){
+        shortestDirections[i] = 0;
+    }
+    shortestDirAddDir(dir);
 }
 
 void placeRock(void) {
@@ -424,6 +436,8 @@ void pathFind(){
     direction shortest = DIRECTION_NONE;
     direction possible = DIRECTION_NONE;
     unsigned int lowestValue = 9000;
+    int j = 0;
+    int rng = ((getRNGLower31() >> 10) & 0xFF) % 1000;
     TileStruct *tile = &tiles[0][0];
     for (int x = 0; x < GRID_DIMENSIONS; x++) {
         for (int y = 0; y < GRID_DIMENSIONS; y++) {
@@ -435,38 +449,55 @@ void pathFind(){
     
     if(checkFieldPathing(totem_x, totem_y, DIRECTION_LEFT) < lowestValue){
         shortest = DIRECTION_LEFT;
+        shortestDirSetNew(DIRECTION_LEFT);
         lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_LEFT);
+    } else if(checkFieldPathing(totem_x, totem_y, DIRECTION_LEFT) == lowestValue){
+        shortestDirAddDir(DIRECTION_LEFT);
     }
     if(checkFieldState(totem_x, totem_y, DIRECTION_LEFT) == TILESTATE_EMPTY){
         possible = DIRECTION_LEFT;
     }
-    debug2 = lowestValue;
+
     if(checkFieldPathing(totem_x, totem_y, DIRECTION_RIGHT) < lowestValue){
         shortest = DIRECTION_RIGHT;
+        shortestDirSetNew(DIRECTION_RIGHT);
         lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_RIGHT);
+    } else if(checkFieldPathing(totem_x, totem_y, DIRECTION_RIGHT) == lowestValue){
+        shortestDirAddDir(DIRECTION_RIGHT);
     }
     if(checkFieldState(totem_x, totem_y, DIRECTION_RIGHT) == TILESTATE_EMPTY){
         possible = DIRECTION_RIGHT;
     }
-    debug2 = lowestValue;
+
     if(checkFieldPathing(totem_x, totem_y, DIRECTION_UP) < lowestValue){
         shortest = DIRECTION_UP;
+        shortestDirSetNew(DIRECTION_UP);
         lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_UP);
+    } else if(checkFieldPathing(totem_x, totem_y, DIRECTION_UP) == lowestValue){
+        shortestDirAddDir(DIRECTION_UP);
     }
     if(checkFieldState(totem_x, totem_y, DIRECTION_UP) == TILESTATE_EMPTY){
         possible = DIRECTION_UP;
     }
-    debug2 = lowestValue;
+
     if(checkFieldPathing(totem_x, totem_y, DIRECTION_DOWN) < lowestValue){
         shortest = DIRECTION_DOWN;
+        shortestDirSetNew(DIRECTION_DOWN);
         lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_DOWN);
+    } else if(checkFieldPathing(totem_x, totem_y, DIRECTION_DOWN) == lowestValue){
+        shortestDirAddDir(DIRECTION_DOWN);
     }
     if(checkFieldState(totem_x, totem_y, DIRECTION_DOWN) == TILESTATE_EMPTY){
         possible = DIRECTION_DOWN;
     }
-    debug2 = lowestValue;
 
     if(shortest != DIRECTION_NONE){
+        for(int i = 0; i < (rng + 5); i++){
+                j = i % 5;
+            if(shortestDirections[j] == 1){
+                shortest = j;
+            }
+        }
         moveTotem(shortest);
     } else if(possible != DIRECTION_NONE){
         moveTotem(possible);  //  Realized the player can lock themselves in instead, and win that way, and that'd be kinda lame. Clever, but lame.
