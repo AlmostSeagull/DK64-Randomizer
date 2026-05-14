@@ -42,6 +42,7 @@ ROM_DATA static int player_y = 3;
 ROM_DATA static int totem_x = 21;
 ROM_DATA static int totem_y = 21;
 ROM_DATA static int debug = 0;
+ROM_DATA static int debug2 = 0;
 ROM_DATA static unsigned char ending_timer = 0;
 ROM_RODATA_NUM static const rgb game_colors[] = {
     { .red = 0xC0, .green = 0xC0, .blue = 0xC0 }, // TILESTATE_EMPTY,
@@ -81,6 +82,10 @@ void placeRock(void) {
 void resetGame(void) {
     frame_timer = 0;
     second_timer = 0;
+    player_x = 3;
+    player_y = 3;
+    totem_x = 21;
+    totem_y = 21;
 }
 
 void generateBoard(void) {
@@ -189,6 +194,7 @@ void handleState_title(Gfx **dl_ptr) {
         resetGame();
         generateBoard();
         game_state = GAMESTATE_NORMAL;
+        playSFXWrapper(601);
     } else if (p1PressedButtons & B_BUTTON) {
         gameExit();
     }
@@ -252,39 +258,39 @@ char moveBox(int x, int y, direction boxdir){
 void defeat(){
     game_state = GAMESTATE_EATEN;
     ending_timer = 120;
-    playSFXWrapper(246);
+    playSFXWrapper(84);
 }
 
 void moveTotem(direction totdir){
     tiles[totem_x][totem_y].state = TILESTATE_EMPTY;
     switch(totdir){
         case DIRECTION_UP:
-            tiles[totem_x][totem_y - 1].state = TILESTATE_TOTEM;
-            totem_y--;
             if(tiles[totem_x][totem_y - 1].state == TILESTATE_PLAYER){
                 defeat();
             }
+            tiles[totem_x][totem_y - 1].state = TILESTATE_TOTEM;
+            totem_y--;
             break;
         case DIRECTION_LEFT:
-            tiles[totem_x - 1][totem_y].state = TILESTATE_TOTEM;
-            totem_x--;
             if(tiles[totem_x - 1][totem_y].state == TILESTATE_PLAYER){
                 defeat();
             }
+            tiles[totem_x - 1][totem_y].state = TILESTATE_TOTEM;
+            totem_x--;
             break;
         case DIRECTION_RIGHT:
-            tiles[totem_x + 1][totem_y].state = TILESTATE_TOTEM;
-            totem_x++;
             if(tiles[totem_x + 1][totem_y].state == TILESTATE_PLAYER){
                 defeat();
             }
+            tiles[totem_x + 1][totem_y].state = TILESTATE_TOTEM;
+            totem_x++;
             break;
         case DIRECTION_DOWN:
-            tiles[totem_x][totem_y + 1].state = TILESTATE_TOTEM;
-            totem_y++;
             if(tiles[totem_x][totem_y + 1].state == TILESTATE_PLAYER){
                 defeat();
             }
+            tiles[totem_x][totem_y + 1].state = TILESTATE_TOTEM;
+            totem_y++;
             break;
         case DIRECTION_NONE:
             return;
@@ -341,105 +347,139 @@ tileState checkFieldPathing(int x, int y, direction dir){
             if(y > 0){
                 return tiles[x][y - 1].pathfind;
             } else {
-                return 9000;
+                return 9001;
             }
             break;
         case DIRECTION_LEFT:
             if(x > 0){
                 return tiles[x - 1][y].pathfind;
             } else {
-                return 9000;
+                return 9001;
             }
             break;
         case DIRECTION_RIGHT:
             if(x < (GRID_DIMENSIONS - 1)){
                 return tiles[x + 1][y].pathfind;
             } else {
-                return 9000;
+                return 9001;
             }
             break;
         case DIRECTION_DOWN:
             if(y < (GRID_DIMENSIONS - 1)){
                 return tiles[x][y + 1].pathfind;
             } else {
-                return 9000;
+                return 9001;
             }
             break;
         case DIRECTION_NONE:
             return tiles[x][y].pathfind;
             break;
         default:
-            return 9000;
+            return 9001;
             break;
     }
 }
 
-void seek(int x, int y, unsigned int distance){
-    if(x < 0 || y < 0){
-        return;
-    }
-    if(x >= GRID_DIMENSIONS || y >= GRID_DIMENSIONS){
-        return;
-    }
-    if(checkFieldPathing(x, y, DIRECTION_NONE) > distance){
-        tiles[x][y].pathfind = distance;
-    }
-    if(checkFieldState(x, y, DIRECTION_UP) == TILESTATE_EMPTY && checkFieldPathing(x, y, DIRECTION_UP) == 9000){
-        seek(x, (y - 1), (distance + 1));
-    }
-    if(checkFieldState(x, y, DIRECTION_LEFT) == TILESTATE_EMPTY && checkFieldPathing(x, y, DIRECTION_LEFT) == 9000){
-        seek((x - 1), y, (distance + 1));
-    }
-    if(checkFieldState(x, y, DIRECTION_RIGHT) == TILESTATE_EMPTY && checkFieldPathing(x, y, DIRECTION_RIGHT) == 9000){
-        seek((x + 1), y, (distance + 1));
-    }
-    if(checkFieldState(x, y, DIRECTION_DOWN) == TILESTATE_EMPTY && checkFieldPathing(x, y, DIRECTION_DOWN) == 9000){
-        seek(x, (y + 1), (distance + 1));
+void calculateDistances(){
+    char emptyTilesRemain = 1;
+    int distance = 1;
+    unsigned int currentShortest = 9000;
+    tiles[player_x][player_y].pathfind = 0;
+    debug = distance;
+    while(emptyTilesRemain){
+        emptyTilesRemain = 0;
+        for (int x = 0; x < GRID_DIMENSIONS; x++) {
+            for (int y = 0; y < GRID_DIMENSIONS; y++) {
+                if(checkFieldState(x, y, DIRECTION_NONE) == TILESTATE_EMPTY && checkFieldPathing(x, y, DIRECTION_NONE) == 9000){
+                    currentShortest = 9000;
+                    if(checkFieldPathing(x, y, DIRECTION_UP) < currentShortest){
+                        tiles[x][y].pathfind = checkFieldPathing(x, y, DIRECTION_UP) + 1;
+                        currentShortest = tiles[x][y].pathfind;
+                        emptyTilesRemain = 1;
+                    }
+                    if(checkFieldPathing(x, y, DIRECTION_LEFT) < currentShortest){
+                        tiles[x][y].pathfind = checkFieldPathing(x, y, DIRECTION_LEFT) + 1;
+                        currentShortest = tiles[x][y].pathfind;
+                        emptyTilesRemain = 1;
+                    }
+                    if(checkFieldPathing(x, y, DIRECTION_RIGHT) < currentShortest){
+                        tiles[x][y].pathfind = checkFieldPathing(x, y, DIRECTION_RIGHT) + 1;
+                        currentShortest = tiles[x][y].pathfind;
+                        emptyTilesRemain = 1;
+                    }
+                    if(checkFieldPathing(x, y, DIRECTION_DOWN) < currentShortest){
+                        tiles[x][y].pathfind = checkFieldPathing(x, y, DIRECTION_DOWN) + 1;
+                        currentShortest = tiles[x][y].pathfind;
+                        emptyTilesRemain = 1;
+                    }
+                }
+            }
+        }
+        distance++;
+        debug = distance;
     }
 }
 
 void pathFind(){
-    debug = 177;
     direction shortest = DIRECTION_NONE;
+    direction possible = DIRECTION_NONE;
     unsigned int lowestValue = 9000;
+    TileStruct *tile = &tiles[0][0];
     for (int x = 0; x < GRID_DIMENSIONS; x++) {
         for (int y = 0; y < GRID_DIMENSIONS; y++) {
-            TileStruct *tile = &tiles[x][y];
+            tile = &tiles[x][y];
             tile->pathfind = 9000;
         }
     }
-    seek(player_x, player_y, 0);
-    debug = 178;
+    calculateDistances();
     
-    if(checkFieldPathing(totem_x, totem_y, DIRECTION_UP) < lowestValue){
-        shortest = DIRECTION_UP;
-        lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_UP);
-    }
     if(checkFieldPathing(totem_x, totem_y, DIRECTION_LEFT) < lowestValue){
         shortest = DIRECTION_LEFT;
         lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_LEFT);
     }
+    if(checkFieldState(totem_x, totem_y, DIRECTION_LEFT) == TILESTATE_EMPTY){
+        possible = DIRECTION_LEFT;
+    }
+    debug2 = lowestValue;
     if(checkFieldPathing(totem_x, totem_y, DIRECTION_RIGHT) < lowestValue){
         shortest = DIRECTION_RIGHT;
         lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_RIGHT);
     }
+    if(checkFieldState(totem_x, totem_y, DIRECTION_RIGHT) == TILESTATE_EMPTY){
+        possible = DIRECTION_RIGHT;
+    }
+    debug2 = lowestValue;
+    if(checkFieldPathing(totem_x, totem_y, DIRECTION_UP) < lowestValue){
+        shortest = DIRECTION_UP;
+        lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_UP);
+    }
+    if(checkFieldState(totem_x, totem_y, DIRECTION_UP) == TILESTATE_EMPTY){
+        possible = DIRECTION_UP;
+    }
+    debug2 = lowestValue;
     if(checkFieldPathing(totem_x, totem_y, DIRECTION_DOWN) < lowestValue){
         shortest = DIRECTION_DOWN;
         lowestValue = checkFieldPathing(totem_x, totem_y, DIRECTION_DOWN);
     }
+    if(checkFieldState(totem_x, totem_y, DIRECTION_DOWN) == TILESTATE_EMPTY){
+        possible = DIRECTION_DOWN;
+    }
+    debug2 = lowestValue;
 
     if(shortest != DIRECTION_NONE){
-        debug = 179;
         moveTotem(shortest);
-        debug = 180;
+    } else if(possible != DIRECTION_NONE){
+        moveTotem(possible);  //  Realized the player can lock themselves in instead, and win that way, and that'd be kinda lame. Clever, but lame.
     } else {
         game_state = GAMESTATE_WIN;
-        playSFXWrapper(71);
-        ending_timer = 180;
+        playSFXWrapper(323);
     }
 }
 
 void movePlayer(void) {
+    if(ending_timer > 0){
+        return;
+    }
     direction movdir = DIRECTION_NONE;
     if (change_slot == 1) {
         change_slot = 2;
@@ -522,6 +562,7 @@ void loop(Gfx **dl_ptr) {
         case GAMESTATE_INIT:
             handleState_init(&dl);
             debug = 170;
+            debug2 = 171;
             tiles[0][0].pathfind = 48; // debug code
             break;
         case GAMESTATE_TITLE:
@@ -537,3 +578,14 @@ void loop(Gfx **dl_ptr) {
     }
     *dl_ptr = dl;
 }
+
+//SFX:
+/*
+42 tm 47 tns chomps
+62 gulp
+80 arcade win
+81 death
+84 game over arcade
+122 peanut
+601 FEED ME
+*/
